@@ -1,17 +1,21 @@
-from .nodes import FitSize, FitSizeFromImage, FitResizeImage
+from .nodes import FitSize, FitSizeFromImage, FitResizeImage, FitResizeLatent, LoadToFitResizeLatent
 
 # A dictionary that contains all nodes you want to export with their names
 # NOTE: names should be globally unique
 NODE_CLASS_MAPPINGS = {
-    "FitSizeByMax": FitSize,
+    "FitSizeFromInt": FitSize,
     "FitSizeFromImage": FitSizeFromImage,
-    "FitResizeImage": FitResizeImage,
+    "FitSizeResizeImage": FitResizeImage,
+    "FitSizeResizeLatent": FitResizeLatent,
+    "LoadToFitResizeLatent": LoadToFitResizeLatent,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "FitSizeByMax": "Fit Size",
+    "FitSizeFromInt": "Fit Size From Int",
     "FitSizeFromImage": "Fit Size From Image",
-    "FitResizeImage": "Fit Resize Image",
+    "FitSizeResizeImage": "Fit Resize Image",
+    "FitSizeResizeLatent": "Fit Resize Latent",
+    "LoadToFitResizeLatent": "Load Image To Fit Resize Latent",
 }
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
