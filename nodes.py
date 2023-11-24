@@ -27,7 +27,9 @@ def get_max_size (width, height, max, upscale="false"):
     else:
         fit_width = int(max * aspect_ratio)
 
-    return (fit_width, fit_height, aspect_ratio)
+    new_width, new_height = octal_sizes(fit_width, fit_height)
+
+    return (new_width, new_height, aspect_ratio)
 
 def get_image_size(IMAGE) -> tuple[int, int]:
     samples = IMAGE.movedim(-1, 1)
@@ -121,8 +123,7 @@ class FitResizeImage:
         size = get_image_size(image)
         img = tensor2pil(image)
 
-        octalwidth, octalheight = octal_sizes(size[0], size[1])
-        new_width, new_height, aspect_ratio = get_max_size(octalwidth, octalheight, max_size, upscale)
+        new_width, new_height, aspect_ratio = get_max_size(size[0], size[1], max_size, upscale)
 
         resized_image = img.resize((new_width, new_height), resample=Image.Resampling(resample_filters[resampling]))
 
@@ -180,8 +181,7 @@ class FitResizeLatent():
         size = get_image_size(image)
         img = tensor2pil(image)
 
-        octalwidth, octalheight = octal_sizes(size[0], size[1])
-        new_width, new_height, aspect_ratio = get_max_size(octalwidth, octalheight, max_size, upscale)
+        new_width, new_height, aspect_ratio = get_max_size(size[0], size[1], max_size, upscale)
         
         resized_image = img.resize((new_width, new_height), resample=Image.Resampling(resample_filters[resampling]))
         tensor_img = pil2tensor(resized_image)
@@ -286,9 +286,8 @@ class LoadToFitResizeLatent():
         img = tensor2pil(got_image)
 
         new_width, new_height, aspect_ratio = get_max_size(size[0], size[1], max_size, upscale)
-        octalwidth, octalheight = octal_sizes(new_width, new_height)
         
-        resized_image = img.resize((octalwidth, octalheight), resample=Image.Resampling(resample_filters[resampling]))
+        resized_image = img.resize((new_width, new_height), resample=Image.Resampling(resample_filters[resampling]))
         tensor_img = pil2tensor(resized_image)
 
         # vae encode the image
@@ -301,7 +300,7 @@ class LoadToFitResizeLatent():
         return (
             {"samples":batched},
             tensor_img,
-            octalwidth,
-            octalheight,
+            new_width,
+            new_height,
             aspect_ratio,
             )
