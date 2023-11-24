@@ -5,17 +5,15 @@ from .nodes import FitSize, FitSizeFromImage, FitResizeImage, FitResizeLatent, L
 NODE_CLASS_MAPPINGS = {
     "FitSizeFromInt": FitSize,
     "FitSizeFromImage": FitSizeFromImage,
-    "FitSizeResizeImage": FitResizeImage,
-    "FitSizeResizeLatent": FitResizeLatent,
-    "LoadToFitResizeLatent": LoadToFitResizeLatent,
+    "FitSizeResizeImage": FitResizeLatent,
+    "LoadToFitResizeImage": LoadToFitResizeLatent,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "FitSizeFromInt": "Fit Size From Int",
     "FitSizeFromImage": "Fit Size From Image",
     "FitSizeResizeImage": "Fit Resize Image",
-    "FitSizeResizeLatent": "Fit Resize Latent",
-    "LoadToFitResizeLatent": "Load Image To Fit Resize Latent",
+    "LoadToFitResizeImage": "Load Image To Fit Resize Image",
 }
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
