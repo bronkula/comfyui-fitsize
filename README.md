@@ -2,9 +2,17 @@
 
 A simple set of nodes for making an image fit within a bounding box
 
+## Installation
+
+To install this node, open your `custom_nodes` folder in a terminal and clone this project into it.
+
+`git clone https://github.com/bronkula/comfyui-fitsize.git`
+
 ## Nodes
 
 There are currently a few different nodes that are all based around fitting content within a bounding box. The reasoning behind this is that I like to copy screengrab content into comfyui, and I don't want to worry about what size or aspect ratio it is. I want it to automatically be fit to something appropriate.
+
+These nodes will automatically fudge the sizes to fit within increments of 8, so that the output image sizes will be more palatable to Stable Diffusion. They should all be able to upscale or downscale whatever input they're given.
 
 ### Fit Size From Int
 
@@ -35,6 +43,8 @@ Because the node now outputs a latent batch based on the original image, img2img
 ### Load Image And Resize To Fit
 
 But I decided that I wanted to just add in the image handling completely into one node, so that's what this one is. It has built in image handling compeletely. You can copy and paste image data directly into it, just like the default comfyui node. You don't have to save an image, just paste it in.
+
+This workflow uses a number of other custom node sets to showcase that this node works great in the middle of a workflow.
 
 ![Fit Resize Image](assets/loadtofitresizeimage.png)
 
