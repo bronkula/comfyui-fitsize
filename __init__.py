@@ -13,7 +13,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "FitSizeFromInt": "Fit Size From Int",
     "FitSizeFromImage": "Fit Size From Image",
     "FitSizeResizeImage": "Fit Resize Image",
-    "LoadToFitResizeImage": "Load Image To Fit Resize Image",
+    "LoadToFitResizeImage": "Load Image And Resize To Fit",
 }
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']

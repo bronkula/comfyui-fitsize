@@ -28,7 +28,15 @@ Now this is where things get interesting. This node accepts a vae so that we can
 
 ![Fit Resize Image](assets/fitresizeimage.png)
 
+Because the node now outputs a latent batch based on the original image, img2img workflows are much easier. Simply reduce the denoise in the ksampler to somewhere around `0.5`. Anything less will be more like the original image, and anything more will start to deviate wildly.
+
 ![Fit Resize Image](assets/fitresizeimagec.png)
+
+### Load Image And Resize To Fit
+
+But I decided that I wanted to just add in the image handling completely into one node, so that's what this one is. It has built in image handling compeletely. You can copy and paste image data directly into it, just like the default comfyui node. You don't have to save an image, just paste it in.
+
+![Fit Resize Image](assets/loadtofitresizeimage.png)
 
 ## Author
 
