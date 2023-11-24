@@ -51,3 +51,8 @@ This workflow uses a number of other custom node sets to showcase that this node
 ## Author
 
 Hamilton Cline https://hdraws.com
+
+## Checkpoints
+
+- [Sugar Donut](https://civitai.com/models/161043/sugar-donut)
+- [Jelly Donut](https://civitai.com/models/156381/jelly-donut)
