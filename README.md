@@ -48,6 +48,10 @@ This workflow uses a number of other custom node sets to showcase that this node
 
 ![Fit Resize Image](assets/loadtofitresizeimage.png)
 
+Could this workflow example be simpler? There are a lot of nodes like the Efficiency Nodes that can combine a bunch of functionality, and this node can fit gently in the center of them.
+
+![Fit Resize Image](assets/loadtofitresizeimageb.png)
+
 ## Author
 
 Hamilton Cline https://hdraws.com
