@@ -2,6 +2,18 @@
 
 A simple set of nodes for making an image fit within a bounding box
 
+## Contents
+
+- [Installation](#installation)
+- [Nodes](#nodes)
+    - [Fit Size From Int](#fit-size-from-int)
+    - [Fit Size From Image](#fit-size-from-image)
+    - [Fit Image And Resize](#fit-image-and-resize)
+    - [Load Image And Resize To Fit](#load-image-and-resize-to-fit)
+- [Values](#values)
+    - [Input](#input)
+    - [Output](#output)
+
 ## Installation
 
 To install this node, open your `custom_nodes` folder in a terminal and clone this project into it.
@@ -51,6 +63,8 @@ This workflow uses a number of other custom node sets to showcase that this node
 Here is a simpler workflow example using the Efficiency nodes. The Fit nodes should fit right into the middle of a lot of other workflows.
 
 ![Fit Resize Image](assets/loadtofitresizeimageb.png)
+
+## Values
 
 #### Input
 - **vae** - This value will be a loaded vae from a previous node
