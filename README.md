@@ -30,7 +30,7 @@ This node accepts any image input and will extract the width and height automati
 
 ![Fit Size From Image](assets/fitsizefromimage.png)
 
-### Fit Resize Image
+### Fit And Resize Image
 
 Now this is where things get interesting. This node accepts a vae so that we can skip right to outputting a rescaled image. It will output both an image and a latent batch. This makes it a very useful tool for img2img workflows. 
 
@@ -48,7 +48,7 @@ This workflow uses a number of other custom node sets to showcase that this node
 
 ![Fit Resize Image](assets/loadtofitresizeimage.png)
 
-Could this workflow example be simpler? There are a lot of nodes like the Efficiency Nodes that can combine a bunch of functionality, and this node can fit gently in the center of them.
+Here is a simpler workflow example using the Efficiency nodes. The Fit nodes should fit right into the middle of a lot of other workflows.
 
 ![Fit Resize Image](assets/loadtofitresizeimageb.png)
 
