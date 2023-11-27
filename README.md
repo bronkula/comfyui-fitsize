@@ -30,7 +30,7 @@ This node accepts any image input and will extract the width and height automati
 
 ![Fit Size From Image](assets/fitsizefromimage.png)
 
-### Fit And Resize Image
+### Fit Image And Resize
 
 Now this is where things get interesting. This node accepts a vae so that we can skip right to outputting a rescaled image. It will output both an image and a latent batch. This makes it a very useful tool for img2img workflows. 
 
@@ -52,6 +52,23 @@ Here is a simpler workflow example using the Efficiency nodes. The Fit nodes sho
 
 ![Fit Resize Image](assets/loadtofitresizeimageb.png)
 
+#### Input
+- **vae** - This value will be a loaded vae from a previous node
+- **image** - This value will be a string of a file location
+- **max_size** - This value will be an integer of the largest size you want to rescale to for width or height
+- **resampling** - This value will be the resampling method `[lanczos,nearest,bilinear,bicubic]`
+- **upscale** - This value is true or false, if true small images will be upscaled to the max_size
+- **batch_size** - This value is an integer, default is 1 while any number higher will control batch processing down the line
+- **add_noise** - This value is a float, default is 0 while any number up to 1.0 will add noise to the image
+
+#### Output
+- **latent** - A latent batch of images
+- **image** - The newly resized image not vae encoded
+- **width** - The newly resized width
+- **height** - The newly resized height
+- **aspect ratio** - The aspect ratio of the width and height
+- **mask** - A mask output from loading an image and using the mask editor
+
 ## Author
 
 Hamilton Cline https://hdraws.com
@@ -60,3 +77,4 @@ Hamilton Cline https://hdraws.com
 
 - [Sugar Donut](https://civitai.com/models/161043/sugar-donut)
 - [Jelly Donut](https://civitai.com/models/156381/jelly-donut)
+- [Glazed Donut](https://civitai.com/models/187195/glazed-donut)
