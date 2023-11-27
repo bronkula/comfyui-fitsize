@@ -48,7 +48,7 @@ Now this is where things get interesting. This node accepts a vae so that we can
 
 ![Fit Resize Image](assets/fitresizeimage.png)
 
-Because the node now outputs a latent batch based on the original image, img2img workflows are much easier. Simply reduce the denoise in the ksampler to somewhere around `0.5`. Anything less will be more like the original image, and anything more will start to deviate wildly.
+Because the node now outputs a latent batch based on the original image, img2img workflows are much easier. Simply reduce the denoise in the ksampler to somewhere around `0.5`. Anything less will be more like the original image, and anything more will start to deviate wildly. Noise can be added to the image itself for further iteration.
 
 ![Fit Resize Image](assets/fitresizeimagec.png)
 
