@@ -110,7 +110,7 @@ class FitSize:
     RETURN_NAMES = ("Fit Width", "Fit Height", "Aspect Ratio")
     FUNCTION = "fit_to_size"
 
-    CATEGORY = "Fitsize"
+    CATEGORY = "Fitsize/Numbers"
 
     def fit_to_size (self, original_width, original_height, max_size, upscale="false"):
         values = get_max_size(original_width, original_height, max_size, upscale)
@@ -134,7 +134,7 @@ class FitSizeFromImage:
     RETURN_NAMES = ("Fit Width", "Fit Height", "Aspect Ratio")
     FUNCTION = "fit_to_size_from_image"
 
-    CATEGORY = "Fitsize"
+    CATEGORY = "Fitsize/Numbers"
 
     def fit_to_size_from_image (self, image, max_size, upscale="false"):
         size = get_image_size(image)
@@ -160,7 +160,7 @@ class FitResizeImage:
     RETURN_NAMES = ("Image","Fit Width", "Fit Height", "Aspect Ratio")
     FUNCTION = "fit_resize_image"
 
-    CATEGORY = "Fitsize"
+    CATEGORY = "Fitsize/Image"
 
     def fit_resize_image (self, image, max_size=768, resampling="bicubic", upscale="false", latent=False):
         size = get_image_size(image)
@@ -208,7 +208,7 @@ class FitResizeLatent():
         )
     FUNCTION = "fit_resize_latent"
 
-    CATEGORY = "Fitsize"
+    CATEGORY = "Fitsize/Image"
 
     def fit_resize_latent (self, image, vae, max_size=768, resampling="bicubic", upscale="false", batch_size=1, add_noise=0.0):
 
@@ -252,7 +252,7 @@ class LoadToFitResizeLatent():
         )
     FUNCTION = "fit_resize_latent"
 
-    CATEGORY = "Fitsize"
+    CATEGORY = "Fitsize/Image"
     
     @staticmethod
     def load_image(image):
@@ -300,3 +300,102 @@ class LoadToFitResizeLatent():
             aspect_ratio,
             mask,
             )
+    
+
+class CropImageIntoEvenPieces:
+    def __init__(self):
+        pass
+
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+                "rows": ("INT", {"default": 3, "min": 1, "max": 32, "step": 1,}),
+                "columns": ("INT", {"default": 1, "min": 1, "max": 32, "step": 1,}),
+            },
+        }
+
+    RETURN_TYPES = ("IMAGE",)
+
+    FUNCTION = "run"
+
+    CATEGORY = "Fitsize/Image"
+
+    def run(self, image, rows, columns):
+
+        if rows < 1:
+            rows = 1
+        if columns < 1:
+            columns = 1
+
+        w = image.shape[2] # width
+        h = image.shape[1] # height
+
+        crop_width = int(w / columns)
+        crop_height = int(h / rows)
+
+        image = image.numpy()
+
+        pieces = []
+        for i in range(rows):
+            for j in range(columns):
+                y = i * crop_height
+                x = j * crop_width
+
+                crop = image[: , y : y + crop_height , x : x + crop_width , :]
+                pieces.append(torch.from_numpy(crop))
+                # image[:, y : y + height, x : x + width, :]
+
+        return (torch.cat(pieces, dim=0), )
+    
+
+    
+class RandomImageFromBatch:
+    def __init__(self):
+        pass
+
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "images": ("IMAGE", ),
+                "seed": ("INT", {"default": 0}),
+                "start_index": ("INT", {"default": -1, "min": -1, "max": 32, "step": 1,}),
+                "select_amount": ("INT", {"default": 1, "min": 1, "max": 32, "step": 1,}),
+            },
+        }
+
+    RETURN_TYPES = ("IMAGE",)
+
+    FUNCTION = "run"
+
+    CATEGORY = "Fitsize/Image"
+
+    def run(self, images, seed, start_index, select_amount):
+
+        # if type(images) == torch.Tensor:
+        #     images = images.numpy()
+
+        if start_index == -1:
+            start_index = np.random.randint(0, images.shape[0])
+        if start_index >= images.shape[0]:
+            start_index = images.shape[0]-1
+
+        if select_amount > images.shape[0]:
+            select_amount = images.shape[0]
+        if select_amount < 1:
+            select_amount = 1
+
+
+        print(
+            f"RandomImageFromBatch: start_index {start_index},",
+            f"select_amount {select_amount}",
+            f"total_images {images.shape[0]}",)
+
+        selected = images[start_index:start_index + select_amount]
+
+        print(f"RandomImageFromBatch: selected {selected.shape[0]} images")
+
+        return (selected, )
+
