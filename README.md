@@ -10,6 +10,10 @@ A simple set of nodes for making an image fit within a bounding box
     - [Fit Size From Image](#fit-size-from-image)
     - [Fit Image And Resize](#fit-image-and-resize)
     - [Load Image And Resize To Fit](#load-image-and-resize-to-fit)
+    - [Pick Image From Batch](#random-image-from-batch),
+    - [Pick Image From Batches](#random-image-from-batches),
+    - [Crop Image Into Even Pieces](#crop-image-into-even-pieces),
+    - [Image Region To Mask](#image-region-to-mask),
 - [Values](#values)
     - [Input](#input)
     - [Output](#output)
@@ -63,6 +67,23 @@ This workflow uses a number of other custom node sets to showcase that this node
 Here is a simpler workflow example using the Efficiency nodes. The Fit nodes should fit right into the middle of a lot of other workflows.
 
 ![Fit Resize Image](assets/loadtofitresizeimageb.png)
+
+
+### Pick Image From Batch
+
+This node will pick one image or even a couple from a batch of images
+
+### Pick Image From Batches
+
+This node will pick one or a couple images from a list of batches
+
+### Crop Image Into Even Pieces
+
+This node will cut an image into multiple pieces of rows and columns
+
+### Image Region To Mask
+
+This node will turn out a region from an image based on rows and columns
 
 ## Values
 
