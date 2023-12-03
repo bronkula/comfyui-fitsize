@@ -1,3 +1,4 @@
+import random
 from PIL import Image, ImageOps
 import torch
 import os
@@ -345,9 +346,54 @@ class CropImageIntoEvenPieces:
 
                 crop = image[: , y : y + crop_height , x : x + crop_width , :]
                 pieces.append(torch.from_numpy(crop))
-                # image[:, y : y + height, x : x + width, :]
 
         return (torch.cat(pieces, dim=0), )
+    
+class ImageRegionMask:
+    def __init__(self):
+        pass
+
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+                "rows": ("INT", {"default": 3, "min": 1, "max": 32, "step": 1,}),
+                "columns": ("INT", {"default": 1, "min": 1, "max": 32, "step": 1,}),
+                "chosen_row": ("INT", {"default": 0, "min": 0, "max": 32, "step": 1,}),
+                "chosen_column": ("INT", {"default": 0, "min": 0, "max": 32, "step": 1,}),
+            },
+        }
+
+    RETURN_TYPES = ("MASK",)
+
+    FUNCTION = "run"
+
+    CATEGORY = "Fitsize/Mask"
+
+    def run(self, image, rows, columns, chosen_row, chosen_column):
+
+        if rows < 1:
+            rows = 1
+        if columns < 1:
+            columns = 1
+
+        w = image.shape[2] # width
+        h = image.shape[1] # height
+
+        crop_width = int(w / columns)
+        crop_height = int(h / rows)
+        
+        mask = torch.zeros((h, w))
+
+        min_y = crop_height * chosen_row
+        max_y = min_y + crop_height
+        min_x = crop_width * chosen_column
+        max_x = min_x + crop_width
+
+        mask[int(min_y):int(max_y), int(min_x):int(max_x)] = 1
+
+        return (mask.unsqueeze(0), )
     
 
     
@@ -387,15 +433,107 @@ class RandomImageFromBatch:
         if select_amount < 1:
             select_amount = 1
 
-
-        print(
-            f"RandomImageFromBatch: start_index {start_index},",
-            f"select_amount {select_amount}",
-            f"total_images {images.shape[0]}",)
-
         selected = images[start_index:start_index + select_amount]
 
-        print(f"RandomImageFromBatch: selected {selected.shape[0]} images")
+        return (selected, )
+    
+class RandomImageFromList:
+    def __init__(self):
+        pass
+
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "list": ("IMAGE", ),
+                "seed": ("INT", {"default": 0}),
+                "start_index": ("INT", {"default": -1, "min": -1, "max": 32, "step": 1,}),
+                "select_amount": ("INT", {"default": 1, "min": 1, "max": 32, "step": 1,}),
+            },
+        }
+
+    RETURN_TYPES = ("IMAGE",)
+
+    FUNCTION = "run"
+
+    CATEGORY = "Fitsize/Image"
+
+    def run(self, list, seed, start_index, select_amount):
+        print(f'type of list: {type(list)}, length: {len(list)}')
+
+        list_length = len(list)
+
+        if start_index == -1:
+            start_index = np.random.randint(0, list_length)
+            # return random.choice(list, select_amount)
+        if start_index >= list_length:
+            start_index = list_length-1
+
+        if select_amount > list_length:
+            select_amount = list_length
+        if select_amount < 1:
+            select_amount = 1
+
+        selected = list[start_index:start_index + select_amount]
+
+        print(f'selected: {start_index} to {start_index + select_amount} found {len(selected)}')
 
         return (selected, )
 
+
+    
+class RandomImageFromBatches:
+    def __init__(self):
+        pass
+
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "seed": ("INT",{"default": 0}),
+                "start_index": ("INT", {"default": -1, "min": -1, "max": 32, "step": 1,}),
+                "select_amount": ("INT", {"default": 1, "min": 1, "max": 32, "step": 1,}),
+            },
+        }
+
+    RETURN_TYPES = ("IMAGE",)
+
+    FUNCTION = "run"
+
+    CATEGORY = "Fitsize/Image"
+
+    def run(self, seed=0, start_index=0, select_amount=1, **kwargs):
+
+        batches = kwargs.values()
+
+        selected = []
+
+        print(f'len(batches): {len(batches)}')
+
+
+
+        for img in batches:
+
+        # if type(images) == torch.Tensor:
+        #     images = images.numpy()
+
+            if start_index == -1:
+                start_index = np.random.randint(0, img.shape[0])
+            if start_index >= img.shape[0]:
+                start_index = img.shape[0]-1
+
+            if select_amount > img.shape[0]:
+                select_amount = img.shape[0]
+            if select_amount < 1:
+                select_amount = 1
+
+            # add images to selected
+            selected.append(img[start_index:start_index + select_amount])
+        
+        # try to return a tensor of images if all widths and heights match
+        try:
+            selected = torch.cat(selected, dim=0)
+        except:
+            pass
+
+        return (selected, )
